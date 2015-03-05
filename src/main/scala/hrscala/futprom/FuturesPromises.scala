@@ -7,15 +7,15 @@ object FuturesPromises {
 
   /** Returns a Future completed with given value
     */
-  def complete[T](value: T): Future[T] = Future.successful(value) //???
+  def complete[T](value: T): Future[T] = ???
 
   /** Returns a Future completed with given exception
     */
-  def fail(ex: Throwable): Future[Nothing] = Future.failed(ex) //???
+  def fail(ex: Throwable): Future[Nothing] = ???
 
   /** Returns a future that never completes
     */
-  def neverCompletes[T]: Future[T] = Promise[T]().future //???
+  def neverCompletes[T]: Future[T] = ???
 
   /** Given a list of futures, return a future of a list of values of all
     * the futures from the list `fs`.
@@ -27,5 +27,5 @@ object FuturesPromises {
     * If any of the futures in the `fs` fail, the resulting future must
     * fail as well.
     */
-  def listToFuture[T](fs: List[Future[T]]): Future[List[T]] = Future.sequence(fs) //???
+  def listToFuture[T](fs: List[Future[T]]): Future[List[T]] = ???
 }

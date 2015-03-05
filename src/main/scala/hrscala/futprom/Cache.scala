@@ -26,10 +26,11 @@ trait Cache[V] { cache ⇒
       */
     def apply(future: Future[V]): Future[V] = cache(key, () ⇒ future)
 
-    /** Returns either the cached Future for the given key, or evaluates the
+/*
+    / ** Returns either the cached Future for the given key, or evaluates the
       * given function which should eventually lead to the completion of the
       * promise.
-      */
+      * /
     def apply[U](f: Promise[V] ⇒ U)(implicit ec: ExecutionContext): Future[V] =
       cache(
         key,
@@ -39,6 +40,7 @@ trait Cache[V] { cache ⇒
           p.future
         }
       )
+*/
   }
 
   /** Returns either the cached Future for the given key or evaluates the given
@@ -94,29 +96,15 @@ final class LruCache[V](val maxCapacity: Int, val initialCapacity: Int) extends 
     * Hint 2: the Promise should be used to evaluate `getValue` only in case
     * of a cache miss.
     */
-  override def apply(key: Any, genValue: () => Future[V])(implicit ec: ExecutionContext): Future[V] = {//???
-    val promise = Promise[V]()
-    store.putIfAbsent(key, promise.future) match {
-      case null ⇒
-        val future = genValue()
-        future.onComplete { value ⇒
-          promise.complete(value)
-          // in case of exceptions we remove the cache entry (i.e. try again later)
-          if (value.isFailure) store.remove(key, promise)
-        }
-        future
-      case existingFuture ⇒ existingFuture
-    }
-  }
+  override def apply(key: Any, genValue: () => Future[V])(implicit ec: ExecutionContext): Future[V] = ???
 
+  override def get(key: Any): Option[Future[V]] = ???
 
-  override def get(key: Any): Option[Future[V]] = Option(store.get(key)) //???
+  override def clear(): Unit = ???
 
-  override def clear(): Unit = store.clear() //???
+  override def size: Int = ???
 
-  override def size: Int = store.size() //???
-
-  override def remove(key: Any): Option[Future[V]] = Option(store.remove(key)) //???
+  override def remove(key: Any): Option[Future[V]] = ???
 }
 
 object LruCache {
